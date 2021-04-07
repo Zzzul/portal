@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Category')
+@section('title', 'Event')
 @section('content')
 <div class="container py-3">
     <div class="row">
@@ -9,14 +9,14 @@
             <div class="d-none d-md-block">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">Category</li>
+                    <li class="breadcrumb-item active">Event</li>
                 </ol>
             </div>
         </div>
 
         {{-- alert --}}
         @if (session()->has('success'))
-        <div class="col-md-8 mt-2">
+        <div class="col-md-12 mt-2">
             <div class="alert alert-success alert-has-icon alert-dismissible show fade">
                 <div class="alert-body">
                     <button class="close" data-dismiss="alert">
@@ -42,55 +42,83 @@
         @endif
 
         {{-- table --}}
-        <div class="col-md-8 mt-2">
+        <div class="col-md-12 mt-2">
             <div class="card">
                 <div class="card-body">
-                    <a href="{{ route('category.create') }}" class="btn btn-primary mb-3 float-right">
+                    <a href="{{ route('event.create') }}" class="btn btn-primary mb-3 float-right">
                         <i class="fas fa-plus"></i>
-                        Create new category</a>
+                        Create new event</a>
 
-                    <table class="table table-hover table-striped table-sm">
+                    <table class="table table-hover table-striped table-sm table-responsive">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Performers</th>
+                                <th>Start Time</th>
+                                <th>Finish Time</th>
+                                <th>Location</th>
+                                <th>Price</th>
+                                <th>Max Audience</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($categories as $index => $category)
+                            @forelse ($events as $index => $event)
                             <tr>
-                                <td>{{ $categories->firstItem() + $index  }}</td>
-                                <td>{{ $category->name }}</td>
-                                <td>{{ $category->created_at->diffForHumans() }}</td>
-                                <td>{{ $category->updated_at->diffForHumans()}}</td>
+                                <td>{{ $events->firstItem() + $index  }}</td>
+                                <td>{{ $event->title }}</td>
+                                <td>{{ $event['category']->name }}</td>
                                 <td>
-                                    <a href="{{ route('category.edit', $category->id) }}"
+                                    <ul class="ml-0 pl-3">
+                                        @foreach ($event->performers as $performer)
+                                        <li>{{  Str::ucfirst($performer->name) }} </li>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                                <td>{{ date('d F Y H:i', strtotime($event->start_time)) }}</td>
+                                <td>{{ date('d F Y H:i', strtotime($event->finish_time)) }}</td>
+                                <td>{{ $event->location }}</td>
+                                <td>Rp. {{ number_format($event->price, 0,',','.') }}</td>
+                                <td>{{ $event->max_audience }}</td>
+                                <td>{{ $event->created_at->diffForHumans() }}</td>
+                                <td>{{ $event->updated_at->diffForHumans()}}</td>
+                                <td>
+                                    <a href="{{ route('event.edit', $event->id) }}"
                                         class="btn btn-sm btn-outline-primary mr-1 my-1">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
 
-                                    <a href="#" data-id={{ $category->id }} data-toggle="modal"
-                                        data-target="#deleteModal" class="btn btn-sm btn-outline-danger btn-delete">
+                                    <a href="{{ route('event.show', $event->id) }}"
+                                        class="btn btn-sm btn-outline-success mr-1 my-1">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+
+                                    <a href="#" data-id={{ $event->id }} data-toggle="modal" data-target="#deleteModal"
+                                        class="btn btn-sm btn-outline-danger btn-delete">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="text-center">Data empty/not found.</td>
+                                <td colspan="11" class="text-center">Data empty/not found.</td>
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
 
-                    {{ $categories->links('pagination::bootstrap-4') }}
+                    {{ $events->links('pagination::bootstrap-4') }}
                 </div>
             </div>
+            {{-- end of card --}}
         </div>
+        {{-- end of col --}}
     </div>
+    {{-- end of row --}}
 </div>
 {{-- end of container --}}
 
@@ -100,17 +128,17 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete category</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Delete event</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('category.destroy') }}" method="post">
+            <form action="{{ route('event.destroy') }}" method="post">
                 <div class="modal-body">
                     @csrf
                     @method('DELETE')
                     <input id="id" name="id" type="hidden">
-                    <h5>Are you sure to delete this category?</h5>
+                    <h5>Are you sure to delete this event?</h5>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>

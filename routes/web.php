@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\PerformerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +21,13 @@ Route::view('home', 'home')->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('category', CategoryController::class)->except('destroy', 'show');
-    Route::delete('/category/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
+    Route::delete('category/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
+
+    Route::resource('event', EventController::class)->except('destroy');
+    Route::delete('event/destroy', [EventController::class, 'destroy'])->name('event.destroy');
+
+    Route::resource('performer', PerformerController::class)->except('destroy', 'show');
+    Route::delete('performer/destroy', [PerformerController::class, 'destroy'])->name('performer.destroy');
 
     Route::view('setting', 'setting')->name('setting');
 });

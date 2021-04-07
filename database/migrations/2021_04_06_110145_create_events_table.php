@@ -15,13 +15,13 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id')->constrained('categories');
-            $table->unsignedBigInteger('user_id')->constrained('users')->comment = 'Penyelenggara';
-            $table->dateTime('mulai');
-            $table->dateTime('selesai');
-            $table->string('lokasi', 50);
-            $table->integer('harga');
-            $table->integer('max_peserta');
+            $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('user_id')->constrained('users')->comment = 'Penyelenggara';
+            $table->dateTime('start_time');
+            $table->dateTime('finish_time');
+            $table->string('location', 50);
+            $table->integer('price');
+            $table->integer('max_audience');
             $table->timestamps();
         });
     }

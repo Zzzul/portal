@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Performer extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'user_id'];
+
+    public function events()
+    {
+        return $this->belongsToMany(Event::class);
+    }
 }

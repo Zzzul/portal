@@ -44,8 +44,18 @@
 
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
+                            <a class="nav-link{{ request()->is('event') ? ' active' : '' }}"
+                                href="{{ route('event.index') }}">Event</a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link{{ request()->is('category') ? ' active' : '' }}"
                                 href="{{ route('category.index') }}">Category</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link{{ request()->is('performer') ? ' active' : '' }}"
+                                href="{{ route('performer.index') }}">Performer</a>
                         </li>
 
                         <!-- Authentication Links -->
