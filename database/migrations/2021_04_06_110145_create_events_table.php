@@ -19,7 +19,7 @@ class CreateEventsTable extends Migration
             $table->foreignId('user_id')->constrained('users')->comment = 'Penyelenggara';
             $table->dateTime('start_time');
             $table->dateTime('finish_time');
-            $table->string('location', 50);
+            $table->string('location', 255);
             $table->integer('price');
             $table->integer('max_audience');
             $table->timestamps();

@@ -7,7 +7,9 @@ use App\Http\Requests\Event\UpdateEventRequest;
 use App\Models\Category;
 use App\Models\Event;
 use App\Models\Performer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class EventController extends Controller
@@ -19,7 +21,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::with('category', 'performers')->paginate(10);
+        $events = Event::with('category', 'performers', 'audiences')->where('user_id', auth()->id())->paginate(10);
 
         return view('events.index', compact('events'));
     }
@@ -62,7 +64,9 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        //
+        $event = Event::with('category', 'performers', 'audiences')->where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+
+        return view('events.show', compact('event'));
     }
 
     /**
@@ -125,5 +129,49 @@ class EventController extends Controller
         } catch (\Exception $ex) {
             return redirect()->route('event.index')->with('error', 'Can`t delete event!');
         }
+    }
+
+    public function registerEvent($slug)
+    {
+        $event = Event::with('category', 'performers', 'audiences')->where('slug', $slug)->firstOrFail();
+
+        if ($event->user_id == auth()->id()) return redirect()->route('home')->with('error', 'Can`t register event cause is your event!');
+
+        $register = [
+            'transaction_code' => Str::random(15),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ];
+
+        try {
+            $event->audiences()->attach(['user_id' => auth()->id()], $register);
+
+            return redirect()->route('home')->with('success', 'Registered event successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('home')->with('error', 'You`re already registered for this event!');
+        }
+    }
+
+    public function updatePayment($transaction_code)
+    {
+
+        $event = DB::table('audience_event')->where('transaction_code', $transaction_code)->first();
+        $payment_status = DB::table('audience_event')->where('transaction_code', $transaction_code)->limit(1);
+
+        if ($event->payment_status == 0) {
+            $payment_status->update(['payment_status' => 1]);
+        } else {
+            $payment_status->update(['payment_status' => 0]);
+        }
+
+        return redirect()->back()->with('success', 'Payment status updated successfully!');
+    }
+
+    public function checkPaymentStatus()
+    {
+
+        $event = DB::table('audience_event')->where('transaction_code', request()->get('transaction_code'))->first();
+
+        return view('events.check-payment-status', compact('event'));
     }
 }

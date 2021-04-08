@@ -83,6 +83,10 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
                                 <a href="{{ route('setting') }}" class="dropdown-item">
+                                    Your events
+                                </a>
+
+                                <a href="{{ route('setting') }}" class="dropdown-item">
                                     Setting
                                 </a>
 
@@ -105,6 +109,18 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        <footer class="mb-3">
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-12">
+                        <hr>
+                        <p class="text-center">Made with <i class="fas fa-heart text-danger"></i> by
+                            <a href="https://github.com/Zzzul/" target="_blank">Mohammad Zulfahmi</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>

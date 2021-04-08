@@ -93,7 +93,7 @@
                         {{-- Performers --}}
                         <div class="form-group @error('performer_id')text-danger @enderror">
                             <Label class="mb-0">Performers</Label>
-                            @foreach ($performers as $performer)
+                            @forelse ($performers as $performer)
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="performer_id[]"
                                     id="performer-id-{{ $performer->id }}" value="{{ $performer->id }}">
@@ -101,7 +101,9 @@
                                     {{ $performer->name }}
                                 </label>
                             </div>
-                            @endforeach
+                            @empty
+                            <p class="text-danger">Performers empty/not found.</p>
+                            @endforelse
 
                             @error('performer_id')
                             <span class="text-danger">The performers field is required.</span>

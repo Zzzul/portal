@@ -26,10 +26,10 @@ class StoreEventRequest extends FormRequest
     {
         return [
             'category_id'   => 'required',
-            'title'         => 'required|string|min:5|max:100|unique:events,title',
+            'title'         => 'required|string|min:5|max:255|unique:events,title',
             'start_time'    => 'required|date_format:Y-m-d\TH:i|after:' . Carbon::today(),
             'finish_time'   => 'required|date_format:Y-m-d\TH:i|after:start_time',
-            'location'      => 'required|string|min:5|max:100',
+            'location'      => 'required|string|min:5|max:255',
             'price'         => 'required|numeric',
             'max_audience'  => 'required|numeric',
             'performer_id'  => 'required'

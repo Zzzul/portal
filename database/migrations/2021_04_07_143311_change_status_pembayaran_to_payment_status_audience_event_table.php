@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTitleToEventTable extends Migration
+class ChangeStatusPembayaranToPaymentStatusAudienceEventTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddTitleToEventTable extends Migration
      */
     public function up()
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->string('title')->after('user_id');
+        Schema::table('audience_event', function (Blueprint $table) {
+            $table->renameColumn('status_pembayaran', 'payment_status');
         });
     }
 
@@ -25,8 +25,8 @@ class AddTitleToEventTable extends Migration
      */
     public function down()
     {
-        Schema::table('event', function (Blueprint $table) {
-            $table->string('title');
+        Schema::table('payment_status_audience_event', function (Blueprint $table) {
+            //
         });
     }
 }

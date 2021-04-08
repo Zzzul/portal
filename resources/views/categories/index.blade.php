@@ -2,7 +2,7 @@
 @section('title', 'Category')
 @section('content')
 <div class="container py-3">
-    <div class="row">
+    <div class="row justify-content-md-center">
 
         {{-- breadcumb --}}
         <div class="col-md-12">

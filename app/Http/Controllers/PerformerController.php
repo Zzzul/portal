@@ -16,7 +16,7 @@ class PerformerController extends Controller
      */
     public function index()
     {
-        $performers = Performer::paginate(10);
+        $performers = Performer::where('user_id', auth()->id())->paginate(10);
 
         return view('performers.index', compact('performers'));
     }

@@ -29,7 +29,7 @@
         @endif
 
         @if (session()->has('error'))
-        <div class="col-md-8 mt-2">
+        <div class="col-md-12 mt-2">
             <div class="alert alert-danger alert-has-icon alert-dismissible show fade">
                 <div class="alert-body">
                     <button class="close" data-dismiss="alert">
@@ -49,68 +49,75 @@
                         <i class="fas fa-plus"></i>
                         Create new event</a>
 
-                    <table class="table table-hover table-striped table-sm table-responsive">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Performers</th>
-                                <th>Start Time</th>
-                                <th>Finish Time</th>
-                                <th>Location</th>
-                                <th>Price</th>
-                                <th>Max Audience</th>
-                                <th>Created At</th>
-                                <th>Updated At</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($events as $index => $event)
-                            <tr>
-                                <td>{{ $events->firstItem() + $index  }}</td>
-                                <td>{{ $event->title }}</td>
-                                <td>{{ $event['category']->name }}</td>
-                                <td>
-                                    <ul class="ml-0 pl-3">
-                                        @foreach ($event->performers as $performer)
-                                        <li>{{  Str::ucfirst($performer->name) }} </li>
-                                        @endforeach
-                                    </ul>
-                                </td>
-                                <td>{{ date('d F Y H:i', strtotime($event->start_time)) }}</td>
-                                <td>{{ date('d F Y H:i', strtotime($event->finish_time)) }}</td>
-                                <td>{{ $event->location }}</td>
-                                <td>Rp. {{ number_format($event->price, 0,',','.') }}</td>
-                                <td>{{ $event->max_audience }}</td>
-                                <td>{{ $event->created_at->diffForHumans() }}</td>
-                                <td>{{ $event->updated_at->diffForHumans()}}</td>
-                                <td>
-                                    <a href="{{ route('event.edit', $event->id) }}"
-                                        class="btn btn-sm btn-outline-primary mr-1 my-1">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
+                    <a href="{{ route('event.check-payment-status-form') }}" class="btn btn-dark mb-3 float-right mr-2">
+                        <i class="fas fa-dollar"></i>
+                        Check payment status</a>
 
-                                    <a href="{{ route('event.show', $event->id) }}"
-                                        class="btn btn-sm btn-outline-success mr-1 my-1">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Performers</th>
+                                    <th>Start Time</th>
+                                    <th>Finish Time</th>
+                                    <th>Location</th>
+                                    <th>Price</th>
+                                    <th>Registered Audiences</th>
+                                    <th>Max Audience</th>
+                                    <th>Created At</th>
+                                    <th>Updated At</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($events as $index => $event)
+                                <tr>
+                                    <td>{{ $events->firstItem() + $index  }}</td>
+                                    <td>{{ $event->title }}</td>
+                                    <td>{{ $event['category']->name }}</td>
+                                    <td>
+                                        <ul class="ml-0 pl-3">
+                                            @foreach ($event->performers as $performer)
+                                            <li>{{  Str::ucfirst($performer->name) }} </li>
+                                            @endforeach
+                                        </ul>
+                                    </td>
+                                    <td>{{ date('d F Y H:i', strtotime($event->start_time)) }}</td>
+                                    <td>{{ date('d F Y H:i', strtotime($event->finish_time)) }}</td>
+                                    <td>{{ $event->location }}</td>
+                                    <td>Rp. {{ number_format($event->price, 0,',','.') }}</td>
+                                    <td>{{ count($event->audiences) }}</td>
+                                    <td>{{ $event->max_audience }}</td>
+                                    <td>{{ $event->created_at->diffForHumans() }}</td>
+                                    <td>{{ $event->updated_at->diffForHumans()}}</td>
+                                    <td>
+                                        <a href="{{ route('event.edit', $event->id) }}"
+                                            class="btn btn-sm btn-outline-primary mr-1 my-1">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
 
-                                    <a href="#" data-id={{ $event->id }} data-toggle="modal" data-target="#deleteModal"
-                                        class="btn btn-sm btn-outline-danger btn-delete">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="11" class="text-center">Data empty/not found.</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                                        <a href="{{ route('event.show', $event->id) }}"
+                                            class="btn btn-sm btn-outline-success mr-1 my-1">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
 
+                                        <a href="#" data-id={{ $event->id }} data-toggle="modal"
+                                            data-target="#deleteModal" class="btn btn-sm btn-outline-danger btn-delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="13" class="text-center">Data empty/not found.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                     {{ $events->links('pagination::bootstrap-4') }}
                 </div>
             </div>

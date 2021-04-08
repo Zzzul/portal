@@ -2,7 +2,7 @@
 @section('title', 'Create new performer')
 @section('content')
 <div class="container py-3">
-    <div class="row">
+    <div class="row justify-content-md-center">
 
         <div class="col-md-12">
             <div class="d-none d-md-block">
@@ -15,21 +15,25 @@
         </div>
 
         <div class="col-md-6">
-            <form action="{{ route('performer.store') }}" method="post">
-                @csrf
-                @method('post')
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('performer.store') }}" method="post">
+                        @csrf
+                        @method('post')
 
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control @error('name')is-invalid @enderror" placeholder="Name"
-                        value="{{ old('name') }}" id="name" name="name" />
-                    @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control @error('name')is-invalid @enderror"
+                                placeholder="Name" value="{{ old('name') }}" id="name" name="name" />
+                            @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save mr-2"></i>
+                            Save</button>
+                    </form>
                 </div>
-
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save mr-2"></i>
-                    Save</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>

@@ -24,7 +24,7 @@ class UpdatePerformerRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:3|max:30|unique:performers,name,' . $this->performer
+            'name' => 'required|string|min:3|max:255|unique:performers,name,' . $this->performer
         ];
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTitleToEventTable extends Migration
+class AddTransactionCodeToAudienceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddTitleToEventTable extends Migration
      */
     public function up()
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->string('title')->after('user_id');
+        Schema::table('audience_event', function (Blueprint $table) {
+            $table->string('transaction_code', 15)->after('user_id')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class AddTitleToEventTable extends Migration
      */
     public function down()
     {
-        Schema::table('event', function (Blueprint $table) {
-            $table->string('title');
+        Schema::table('audience', function (Blueprint $table) {
+            //
         });
     }
 }

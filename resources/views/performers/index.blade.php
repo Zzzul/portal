@@ -2,7 +2,7 @@
 @section('title', 'Performer')
 @section('content')
 <div class="container py-3">
-    <div class="row">
+    <div class="row justify-content-md-center">
 
         {{-- breadcumb --}}
         <div class="col-md-12">
@@ -43,48 +43,52 @@
 
         {{-- table --}}
         <div class="col-md-8 mt-2">
-            <a href="{{ route('performer.create') }}" class="btn btn-primary mb-3">
-                <i class="fas fa-plus mr-1"></i>
-                Create new performer</a>
+            <div class="card">
+                <div class="card-body">
+                    <a href="{{ route('performer.create') }}" class="btn btn-primary mb-3 float-right">
+                        <i class="fas fa-plus mr-1"></i>
+                        Create new performer</a>
 
-            <table class="table table-hover table-striped table-sm">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($performers as $index => $performer)
-                    <tr>
-                        <td>{{ $performers->firstItem() + $index  }}</td>
-                        <td>{{ $performer->name }}</td>
-                        <td>{{ $performer->created_at->diffForHumans() }}</td>
-                        <td>{{ $performer->updated_at->diffForHumans()}}</td>
-                        <td>
-                            <a href="{{ route('performer.edit', $performer->id) }}"
-                                class="btn btn-sm btn-outline-primary mr-1 my-1">
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
+                    <table class="table table-hover table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($performers as $index => $performer)
+                            <tr>
+                                <td>{{ $performers->firstItem() + $index  }}</td>
+                                <td>{{ $performer->name }}</td>
+                                <td>{{ $performer->created_at->diffForHumans() }}</td>
+                                <td>{{ $performer->updated_at->diffForHumans()}}</td>
+                                <td>
+                                    <a href="{{ route('performer.edit', $performer->id) }}"
+                                        class="btn btn-sm btn-outline-primary mr-1 my-1">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
 
-                            <a href="#" data-id={{ $performer->id }} data-toggle="modal" data-target="#deleteModal"
-                                class="btn btn-sm btn-outline-danger btn-delete">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="text-center">Data empty/not found.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                                    <a href="#" data-id={{ $performer->id }} data-toggle="modal"
+                                        data-target="#deleteModal" class="btn btn-sm btn-outline-danger btn-delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center">Data empty/not found.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
 
-            {{ $performers->links('pagination::bootstrap-4') }}
+                    {{ $performers->links('pagination::bootstrap-4') }}
+                </div>
+            </div>
         </div>
     </div>
 </div>
