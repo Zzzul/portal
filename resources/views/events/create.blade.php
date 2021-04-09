@@ -90,6 +90,15 @@
                             @error('location') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
 
+                        {{-- description --}}
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control @error('description')is-invalid @enderror"
+                                placeholder="Description" id="description"
+                                name="description">{{ old('description') }}</textarea>
+                            @error('description') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+
                         {{-- Performers --}}
                         <div class="form-group @error('performer_id')text-danger @enderror">
                             <Label class="mb-0">Performers</Label>

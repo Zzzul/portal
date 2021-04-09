@@ -32,7 +32,8 @@ class StoreEventRequest extends FormRequest
             'location'      => 'required|string|min:5|max:255',
             'price'         => 'required|numeric',
             'max_audience'  => 'required|numeric',
-            'performer_id'  => 'required'
+            'performer_id'  => 'required',
+            'description'   => 'required|string|min:5|max:255'
         ];
     }
 }

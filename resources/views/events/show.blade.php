@@ -62,8 +62,8 @@
                     <div class="form-group row">
                         <div class="col-md-6">
                             <label for="price">Price</label>
-                            <input type="number" class="form-control" placeholder="Price" min="0" id="price" disabled
-                                name="price" value="{{ $event->price }}" />
+                            <input type="text" class="form-control" id="price" disabled name="price"
+                                value="Rp. {{ number_format($event->price, 0,',','.') }}" />
                         </div>
                         <div class="col-md-6">
                             <label for="max-audience">Max Audience</label>
@@ -76,6 +76,12 @@
                         <label for="location">Location</label>
                         <textarea class="form-control" placeholder="Location" id="location" disabled
                             name="location">{{ $event->location }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" disabled
+                            name="description">{{ $event->description }}</textarea>
                     </div>
 
                     <div class="form-group">

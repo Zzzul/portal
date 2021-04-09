@@ -20,6 +20,9 @@
                 {{-- <img src="..." class="card-img-top" alt="Event thumbnail"> --}}
                 <div class="card-body">
                     <h5 class="card-title">{{ $event->title }}</h5>
+                    <p class="card-text mb-2">
+                        {{ Str::limit($event->description, 200) }}
+                    </p>
 
                     <p class="card-text mb-1">
                         Category: {{ $event->category->name }}

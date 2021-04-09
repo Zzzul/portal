@@ -46,8 +46,9 @@
                 {{-- <img src="..." class="card-img-top" alt="Event thumbnail"> --}}
                 <div class="card-body">
                     <h5 class="card-title">{{ $event->title }}</h5>
+                    {{ Str::limit($event->description, 100) }}
 
-                    <p class="card-text mb-1">
+                    <p class="card-text mb-1 mt-2">
                         Category: {{ $event->category->name }}
                     </p>
 
@@ -59,42 +60,52 @@
                         Price: Rp. {{ number_format($event->price, 0,',','.') }}
                     </p>
 
-                    <p class="card-text mb-1">
+                    <p class="card-text mb-2 mt-1">
                         Start: {{ date('d F Y', strtotime($event->start_time)) }} -
                         {{ date('d F Y', strtotime($event->finish_time)) }}
                     </p>
-
-                    <p class="card-text mb-1">
-                        Performers :
-                        <ul class="ml-0 pl-3">
-                            @foreach ($event->performers as $performer)
-                            <li>{{  Str::ucfirst($performer->name) }} </li>
-                            @endforeach
-                        </ul>
-                    </p>
-
 
                     @if ($event->organizer->id == auth()->id())
                     <button class="btn btn-primary btn-sm px-2 py-2" style="position: absolute;top:0;right:0;">
                         Your Event
                     </button>
                     @else
-                    @php $registered = false @endphp
+                    @php
+                    $registered = ''
+                    @endphp
                     @foreach ($event->audiences as $audience)
                     {{-- jika user sudah terdaftar pada event--}}
                     @if ($audience['pivot']->user_id == auth()->id())
-                    <button class="btn btn-info btn-sm p2" style="position: absolute;top:0;right:0;">
+                    <div class="bg-info p-2 rounded" style="position: absolute;top:0;right:0;">
                         <i class="fas fa-check"></i>
-                    </button>
+                    </div>
+                    @php
+                    // get audience user_id
+                    $registered = $audience['pivot']->user_id
+                    @endphp
                     @endif
                     {{-- end of $audience['pivot']->user_id == auth()->id() --}}
-                    @php $registered = true @endphp
                     @endforeach
                     @endif
 
-                    <a href="event/register/{{ $event->slug }}" class="btn btn-primary btn-block">Register</a>
+                    @guest
+                    <a href="event/register/{{ $event->slug }}" class="btn btn-primary btn-block">
+                        <i class="fas fa-sign-in"></i>
+                        Register
+                    </a>
+                    @endguest
 
-                    <a href="event/detail/{{ $event->slug }}" class="btn btn-success btn-block">Detail</a>
+                    @if ($registered != auth()->id())
+                    <a href="event/register/{{ $event->slug }}" class="btn btn-primary btn-block">
+                        <i class="fas fa-sign-in"></i>
+                        Register
+                    </a>
+                    @endif
+
+                    <a href="event/detail/{{ $event->slug }}" class="btn btn-success btn-block">
+                        <i class="fas fa-eye"></i>
+                        Detail
+                    </a>
                 </div>
             </div>
         </div>

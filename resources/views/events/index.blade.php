@@ -59,6 +59,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Title</th>
+                                    <th>Description</th>
                                     <th>Category</th>
                                     <th>Performers</th>
                                     <th>Start Time</th>
@@ -77,6 +78,7 @@
                                 <tr>
                                     <td>{{ $events->firstItem() + $index  }}</td>
                                     <td>{{ $event->title }}</td>
+                                    <td>{{ Str::limit($event->description, 10) }}</td>
                                     <td>{{ $event['category']->name }}</td>
                                     <td>
                                         <ul class="ml-0 pl-3">
