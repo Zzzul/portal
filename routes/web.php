@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PerformerController;
 use Illuminate\Support\Facades\Route;
@@ -28,11 +29,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('event/destroy', [EventController::class, 'destroy'])->name('event.destroy');
     Route::get('event/register/{slug}', [EventController::class, 'registerEvent'])->name('event.register');
 
-    Route::get('event/payment-valid/{transaction_code}', [EventController::class, 'updatePayment'])->name('event.update-payment');
+    Route::get('event/payment-valid/{transaction_code}', [EventController::class, 'updatePaymentStatus'])->name('event.update-payment-status');
 
-    Route::get('event/check-payment-status', [EventController::class, 'checkPaymentStatus'])->name('event.check-payment-status-form');
+    Route::get('event/check-payment-status', [EventController::class, 'checkPaymentStatus'])->name('event.check-payment-status');
 
-    Route::resource('event', EventController::class)->except('destroy', 'updatePayment', 'registerEvent');
+    Route::get('event/history', [HistoryController::class, 'index'])->name('history');
+
+    Route::resource('event', EventController::class)->except('destroy', 'updatePaymentStatus', 'registerEvent', 'checkPaymentStatus', 'history');
 
     // performer
     Route::resource('performer', PerformerController::class)->except('destroy', 'show');

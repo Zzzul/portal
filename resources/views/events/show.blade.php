@@ -116,12 +116,12 @@
                                 <td>{{ $audience['pivot']->payment_status == 0 ? 'Pending' : 'Success' }}</td>
                                 <td>
                                     @if ($audience['pivot']->payment_status == 0)
-                                    <a href="{{ route('event.update-payment', $audience['pivot']->transaction_code) }}"
+                                    <a href="{{ route('event.update-payment-status', $audience['pivot']->transaction_code) }}"
                                         data-toggle="tooltip" data-placement="top" title="Set payment as successful">
                                         <i class="fas fa-check text-success"></i>
                                     </a>
                                     @else
-                                    <a href="{{ route('event.update-payment', $audience['pivot']->transaction_code) }}"
+                                    <a href="{{ route('event.update-payment-status', $audience['pivot']->transaction_code) }}"
                                         data-toggle="tooltip" data-placement="top" title="Set payment as pending">
                                         <i class="fas fa-times text-danger"></i>
                                     </a>

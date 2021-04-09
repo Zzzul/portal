@@ -49,7 +49,7 @@
                         <i class="fas fa-plus"></i>
                         Create new event</a>
 
-                    <a href="{{ route('event.check-payment-status-form') }}" class="btn btn-dark mb-3 float-right mr-2">
+                    <a href="{{ route('event.check-payment-status') }}" class="btn btn-dark mb-3 float-right mr-2">
                         <i class="fas fa-dollar"></i>
                         Check payment status</a>
 

@@ -53,7 +53,7 @@ class EventController extends Controller
         $event = Event::create($attr);
         $event->performers()->attach($request->performer_id);
 
-        return redirect()->route('event.index')->with('success', 'Event created successfully!');
+        return redirect()->route('event.index')->with('success', 'Event created successfully.');
     }
 
     /**
@@ -109,7 +109,7 @@ class EventController extends Controller
 
         $event->performers()->sync($request->performer_id);
 
-        return redirect()->route('event.index')->with('success', 'Event updated successfully!');
+        return redirect()->route('event.index')->with('success', 'Event updated successfully.');
     }
 
     /**
@@ -125,9 +125,9 @@ class EventController extends Controller
         try {
             $event->delete();
 
-            return redirect()->route('event.index')->with('success', 'Event deleted successfully!');
+            return redirect()->route('event.index')->with('success', 'Event deleted successfully.');
         } catch (\Exception $ex) {
-            return redirect()->route('event.index')->with('error', 'Can`t delete event!');
+            return redirect()->route('event.index')->with('error', 'Can`t delete event.');
         }
     }
 
@@ -135,26 +135,33 @@ class EventController extends Controller
     {
         $event = Event::with('category', 'performers', 'audiences')->where('slug', $slug)->firstOrFail();
 
-        if ($event->user_id == auth()->id()) return redirect()->route('home')->with('error', 'Can`t register event cause is your event!');
+        if ($event->user_id == auth()->id())
+            return redirect()->route('home')->with('error', 'Can`t register event cause is your event.');
 
-        $register = [
-            'transaction_code' => Str::random(15),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ];
+        // if max audience full
+        if ($event->max_audience === count($event['audiences']))
+            return redirect()->route('home')->with('error', 'Can`t register event audiences is full.');
+
+        if (date('Y-m-d H:i', strtotime($event->start_time)) < date('Y-m-d H:i'))
+            return redirect()->route('home')->with('error', 'Can`t register event cause event is already started/ended.');
 
         try {
-            $event->audiences()->attach(['user_id' => auth()->id()], $register);
 
-            return redirect()->route('home')->with('success', 'Registered event successfully!');
+            $event->audiences()->attach(['user_id' => auth()->id()], [
+                // insert additional data for pivot table
+                'transaction_code' => Str::random(15),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+
+            return redirect()->route('home')->with('success', 'Registered event successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('home')->with('error', 'You`re already registered for this event!');
+            return redirect()->route('home')->with('error', 'You`re already registered for this event.');
         }
     }
 
-    public function updatePayment($transaction_code)
+    public function updatePaymentStatus($transaction_code)
     {
-
         $event = DB::table('audience_event')->where('transaction_code', $transaction_code)->first();
         $payment_status = DB::table('audience_event')->where('transaction_code', $transaction_code)->limit(1);
 
@@ -164,12 +171,11 @@ class EventController extends Controller
             $payment_status->update(['payment_status' => 0]);
         }
 
-        return redirect()->back()->with('success', 'Payment status updated successfully!');
+        return redirect()->back()->with('success', 'Payment status updated successfully.');
     }
 
     public function checkPaymentStatus()
     {
-
         $event = DB::table('audience_event')->where('transaction_code', request()->get('transaction_code'))->first();
 
         return view('events.check-payment-status', compact('event'));

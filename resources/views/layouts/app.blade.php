@@ -82,8 +82,8 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
-                                <a href="{{ route('setting') }}" class="dropdown-item">
-                                    Your events
+                                <a href="{{ route('history') }}" class="dropdown-item">
+                                    History events
                                 </a>
 
                                 <a href="{{ route('setting') }}" class="dropdown-item">

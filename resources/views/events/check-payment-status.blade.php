@@ -53,7 +53,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('event.check-payment-status-form') }}" method="get">
+                    <form action="{{ route('event.check-payment-status') }}" method="get">
                         <div class="form-group">
                             <label for="transaction-code">Transaction Code</label>
                             <input type="text" class="form-control @error('transaction_code')is-invalid @enderror"
