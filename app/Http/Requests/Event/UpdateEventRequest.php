@@ -33,7 +33,8 @@ class UpdateEventRequest extends FormRequest
             'price'         => 'required|numeric',
             'max_audience'  => 'required|numeric',
             'performer_id'  => 'required',
-            'description'   => 'required|string|min:5|max:255'
+            'description'   => 'required|string|min:5|max:255',
+            'thumbnail'     => 'nullable|mimes:jpg,png,jpeg,svg|max:2048'
         ];
     }
 }

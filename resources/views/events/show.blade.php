@@ -100,6 +100,12 @@
         {{-- end of col --}}
 
         <div class="col-md-7">
+            @if ($event->thumbnail)
+            <div class="card p-1 mb-2">
+                <img src="{{ asset('storage/images/thumbnail/'. $event->thumbnail) }}" alt="{{ $event->thumbnail }}"
+                    class="img-fluid rounded">
+            </div>
+            @endif
             <div class="card">
                 <div class="card-body">
                     <h5>List of all audiences</h5>

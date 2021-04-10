@@ -43,7 +43,11 @@
         @forelse ($events as $event)
         <div class="col-md-4 mt-2">
             <div class="card mb-2">
-                {{-- <img src="..." class="card-img-top" alt="Event thumbnail"> --}}
+                @if ($event->thumbnail)
+                <img src="{{ asset('storage/images/thumbnail/'. $event->thumbnail) }}" alt="{{ $event->thumbnail }}"
+                    class="img-fluid rounded card-img-top">
+                @endif
+
                 <div class="card-body">
                     <h5 class="card-title">{{ $event->title }}</h5>
                     {{ Str::limit($event->description, 100) }}
@@ -66,23 +70,21 @@
                     </p>
 
                     @if ($event->organizer->id == auth()->id())
-                    <button class="btn btn-primary btn-sm px-2 py-2" style="position: absolute;top:0;right:0;">
-                        Your Event
+                    <button class="bg-primary p-2 rounded" style="position: absolute;top:0;right:0;">
+                        <i class="fas fa-crown"></i>
                     </button>
+                    @php $registered = $event->organizer->id @endphp
                     @else
-                    @php
-                    $registered = ''
-                    @endphp
+
+                    @php $registered = '' @endphp
+
                     @foreach ($event->audiences as $audience)
                     {{-- jika user sudah terdaftar pada event--}}
                     @if ($audience['pivot']->user_id == auth()->id())
-                    <div class="bg-info p-2 rounded" style="position: absolute;top:0;right:0;">
-                        <i class="fas fa-check"></i>
+                    <div class="bg-danger p-2 rounded" style="position: absolute;top:0;right:0;">
+                        <i class="fas fa-check text-light"></i>
                     </div>
-                    @php
-                    // get audience user_id
-                    $registered = $audience['pivot']->user_id
-                    @endphp
+                    @php $registered = $audience['pivot']->user_id @endphp
                     @endif
                     {{-- end of $audience['pivot']->user_id == auth()->id() --}}
                     @endforeach
@@ -90,7 +92,7 @@
 
                     @guest
                     <a href="event/register/{{ $event->slug }}" class="btn btn-primary btn-block">
-                        <i class="fas fa-sign-in"></i>
+                        <i class="fas fa-sign-in-alt"></i>
                         Register
                     </a>
                     @endguest

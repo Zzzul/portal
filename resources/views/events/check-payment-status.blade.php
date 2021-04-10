@@ -63,7 +63,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save mr-2"></i>
+                            <i class="fas fa-paper-plane"></i>
                             Check
                         </button>
                     </form>

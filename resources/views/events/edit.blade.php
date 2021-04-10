@@ -17,7 +17,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('event.update', $event->id) }}" method="post">
+                    <form action="{{ route('event.update', $event->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('patch')
 
@@ -85,13 +85,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="location">Location</label>
-                            <textarea class="form-control @error('location')is-invalid @enderror" placeholder="Location"
-                                id="location" name="location">{{ old('location', $event->location) }}</textarea>
-                            @error('location') <span class="text-danger">{{ $message }}</span> @enderror
-                        </div>
-
                         {{-- description --}}
                         <div class="form-group">
                             <label for="description">Description</label>
@@ -101,6 +94,25 @@
                             @error('description') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
 
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <textarea class="form-control @error('location')is-invalid @enderror" placeholder="Location"
+                                id="location" name="location">{{ old('location', $event->location) }}</textarea>
+                            @error('location') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+
+                        {{-- thumbnail --}}
+                        <div class="form-group">
+                            <label for="thumbnail" class="float-left">Thumbnail</label>
+                            <label class="float-right text-secondary">Don't upload file if you didn't update the
+                                thumbnail.</label>
+                            <input type="file" class="form-control @error('thumbnail')is-invalid @enderror"
+                                id="thumbnail" name="thumbnail" />
+                            @error('thumbnail') <span class="text-danger">{{ $message }}</span> @enderror
+                            <label for="thumbnail">
+                                Image: jpg, png, jpeg, svg, max:2MB
+                            </label>
+                        </div>
 
                         <div class="form-group @error('performer_id')text-danger @enderror">
                             <Label>Performers</Label>
@@ -140,6 +152,16 @@
             {{-- end of card --}}
         </div>
         {{-- end of col --}}
+
+        @if ($event->thumbnail)
+        <div class="col-md-6">
+            <div class="card p-1">
+                <img src="{{ asset('storage/images/thumbnail/'. $event->thumbnail) }}" alt="{{ $event->thumbnail }}"
+                    class="img-fluid rounded">
+            </div>
+        </div>
+        {{-- end of col --}}
+        @endif
     </div>
     {{-- end of row --}}
 </div>

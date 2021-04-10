@@ -50,7 +50,7 @@
                         Create new event</a>
 
                     <a href="{{ route('event.check-payment-status') }}" class="btn btn-dark mb-3 float-right mr-2">
-                        <i class="fas fa-dollar"></i>
+                        <i class="fas fa-search-dollar"></i>
                         Check payment status</a>
 
                     <div class="table-responsive">
@@ -78,7 +78,7 @@
                                 <tr>
                                     <td>{{ $events->firstItem() + $index  }}</td>
                                     <td>{{ $event->title }}</td>
-                                    <td>{{ Str::limit($event->description, 10) }}</td>
+                                    <td>{{ Str::limit($event->description, 75) }}</td>
                                     <td>{{ $event['category']->name }}</td>
                                     <td>
                                         <ul class="ml-0 pl-3">

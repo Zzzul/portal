@@ -30,4 +30,9 @@ class Event extends Model
     {
         return $this->belongsToMany(User::class, 'audience_event')->withPivot('payment_status', 'user_id', 'transaction_code');
     }
+
+    public function history()
+    {
+        return $this->belongsToMany(User::class, 'audience_event')->wherePivot('user_id', auth()->id())->withPivot('payment_status', 'transaction_code');
+    }
 }

@@ -17,11 +17,27 @@
         @forelse ($events as $event)
         <div class="col-md-4 mt-2">
             <div class="card mb-2">
-                {{-- <img src="..." class="card-img-top" alt="Event thumbnail"> --}}
+                <img src="{{ asset('storage/images/thumbnail/'. $event->thumbnail) }}" alt="{{ $event->thumbnail }}"
+                    class="card-img-top" alt="Event thumbnail">
                 <div class="card-body">
-                    <h5 class="card-title">{{ $event->title }}</h5>
-                    <p class="card-text mb-2">
+                    <h5 class="card-title">
+                        {{ $event->title }}
+                        <hr class="m-1 p-1">
+                        <span>
+                            @foreach ($event->history as $item)
+                            {{ $item['pivot']->transaction_code }}
+                            {!! $item['pivot']->payment_status == 1 ? '<i class="fas fa-check text-success ml-2"></i>' :
+                            '<i class="fas fa-times text-danger ml-2"></i>' !!}
+                            @endforeach
+                        </span>
+                    </h5>
+                    <p class="card-text mb-3">
                         {{ Str::limit($event->description, 200) }}
+                    </p>
+
+                    <p class="card-text mb-1">
+                        Start: {{ date('d F Y H:i', strtotime($event->start_time)) }} -
+                        {{ date('d F Y H:i', strtotime($event->finish_time)) }}
                     </p>
 
                     <p class="card-text mb-1">
@@ -34,11 +50,6 @@
 
                     <p class="card-text mb-1">
                         Price: Rp. {{ number_format($event->price, 0,',','.') }}
-                    </p>
-
-                    <p class="card-text mb-1">
-                        Start: {{ date('d F Y', strtotime($event->start_time)) }} -
-                        {{ date('d F Y', strtotime($event->finish_time)) }}
                     </p>
 
                     <p class="card-text mb-1">

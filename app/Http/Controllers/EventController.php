@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -49,6 +50,14 @@ class EventController extends Controller
         $attr = $request->validated();
         $attr['slug'] = Str::slug($attr['title']);
         $attr['user_id'] = auth()->id();
+
+        if ($request->file('thumbnail')->isValid()) {
+            $filename = $attr['slug']  . '.' . $request->thumbnail->extension();
+
+            $request->thumbnail->storeAs('public/images/thumbnail/', $filename);
+
+            $attr['thumbnail'] = $filename;
+        }
 
         $event = Event::create($attr);
         $event->performers()->attach($request->performer_id);
@@ -100,10 +109,21 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, $id)
     {
+        $event = Event::with('category', 'performers')->where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+
         $attr = $request->validated();
         $attr['slug'] = Str::slug($attr['title']);
 
-        $event = Event::with('category', 'performers')->where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+        if ($request->file('thumbnail') && $request->file('thumbnail')->isValid()) {
+            // remove old file
+            Storage::delete('public/images/thumbnail/' . $event->thumbnail);
+
+            $filename = $attr['slug'] . '.' . $request->thumbnail->extension();
+
+            $request->thumbnail->storeAs('public/images/thumbnail/', $filename);
+
+            $attr['thumbnail'] = $filename;
+        }
 
         $event->update($attr);
 
@@ -120,13 +140,22 @@ class EventController extends Controller
      */
     public function destroy()
     {
-        $event = Event::where('id', request()->id)->where('user_id', auth()->id())->firstOrFail();
+        $event = Event::with('audiences', 'performers')->where(['id' => request()->id, 'user_id' => auth()->id()])->firstOrFail();
 
-        try {
-            $event->delete();
+        // if empty regisrered audiences
+        if ($event->audiences->isEmpty()) {
+            // detach all event_performers, so can delete event
+            $event->performers()->detach($event->performers);
 
-            return redirect()->route('event.index')->with('success', 'Event deleted successfully.');
-        } catch (\Exception $ex) {
+            try {
+                Storage::delete('public/images/thumbnail/' . $event->thumbnail);
+                $event->delete();
+
+                return redirect()->route('event.index')->with('success', 'Event deleted successfully.');
+            } catch (\Exception $ex) {
+                return redirect()->route('event.index')->with('error', 'Can`t delete event.');
+            }
+        } else {
             return redirect()->route('event.index')->with('error', 'Can`t delete event.');
         }
     }
