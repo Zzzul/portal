@@ -30,6 +30,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('event/history', [HistoryController::class, 'index'])->name('history')->middleware('permission:event history');
 
+    Route::get('event/register/{slug}', [EventController::class, 'registerEvent'])->name('event.register');
+
     Route::view('setting', 'setting')->name('setting')->middleware('permission:setting');
 });
 
@@ -37,8 +39,6 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['middleware' => ['auth', 'role:organizer|admin']], function () {
     // event
     Route::delete('event/destroy', [EventController::class, 'destroy'])->name('event.destroy');
-
-    Route::get('event/register/{slug}', [EventController::class, 'registerEvent'])->name('event.register');
 
     Route::get('event/payment-valid/{transaction_code}', [EventController::class, 'updatePaymentStatus'])->name('event.update-payment-status');
 

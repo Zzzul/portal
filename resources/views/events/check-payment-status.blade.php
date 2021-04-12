@@ -58,7 +58,7 @@
                             <label for="transaction-code">Transaction Code</label>
                             <input type="text" class="form-control @error('transaction_code')is-invalid @enderror"
                                 placeholder="Transaction Code" id="transaction-code" name="transaction_code"
-                                value="{{ request()->get('transaction_code') }}" />
+                                value="{{ request()->get('transaction_code') }}" autofocus />
                             @error('transaction_code') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
 

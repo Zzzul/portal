@@ -60,6 +60,11 @@
                             @endforeach
                         </ul>
                     </p>
+
+                    @foreach ($event->history as $item)
+                    {!! QrCode::size(310)->generate($item['pivot']->transaction_code) !!}
+                    @endforeach
+
                 </div>
             </div>
         </div>

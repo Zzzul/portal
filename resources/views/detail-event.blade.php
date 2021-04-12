@@ -48,18 +48,12 @@
                     <div class="col-md-5">
                         @if ($event->thumbnail)
                         <img src="{{ asset('storage/images/thumbnail/'. $event->thumbnail) }}"
-                            alt="{{ $event->thumbnail }}" class="img-fluid rounded card-img-top">
+                            alt="{{ $event->thumbnail }}" class="img-fluid card-img-top">
                         @endif
 
-                        <p class="m-3">
-                            send proof of transfer to email <a
-                                href="mailto:{{ $event->organizer->email }}">{{ $event->organizer->email }}</a> before
-                            the event start.
-                        </p>
-
-                        <div class="mt-3">
+                        <div class="mt-0">
                             @if ($event->organizer->id == auth()->id())
-                            <div class="bg-primary p-2 rounded" style="position: absolute;top:0;right:0;">
+                            <div class="bg-primary p-2" style="position: absolute;top:0;right:0;">
                                 <i class="fas fa-crown text-light"></i>
                             </div>
                             @php $registered = $event->organizer->id @endphp
@@ -90,10 +84,17 @@
 
                             @if ($registered != auth()->id())
                             <a href="{{ route('event.register', $event->slug) }}" class="btn btn-primary btn-block">
-                                <i class="fas fa-sign-in"></i>
+                                <i class="fas fa-sign-in-alt"></i>
                                 Register
                             </a>
                             @endif
+
+                            <p class="m-3">
+                                Send proof of transfer to email <a
+                                    href="mailto:{{ $event->organizer->email }}">{{ $event->organizer->email }}</a>
+                                before
+                                the event start.
+                            </p>
                         </div>
                     </div>
 

@@ -99,7 +99,7 @@
 
                     @if ($registered != auth()->id())
                     <a href="event/register/{{ $event->slug }}" class="btn btn-primary btn-block">
-                        <i class="fas fa-sign-in"></i>
+                        <i class="fas fa-sign-in-alt"></i>
                         Register
                     </a>
                     @endif
