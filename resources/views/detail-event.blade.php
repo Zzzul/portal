@@ -51,6 +51,12 @@
                             alt="{{ $event->thumbnail }}" class="img-fluid rounded card-img-top">
                         @endif
 
+                        <p class="m-3">
+                            send proof of transfer to email <a
+                                href="mailto:{{ $event->organizer->email }}">{{ $event->organizer->email }}</a> before
+                            the event start.
+                        </p>
+
                         <div class="mt-3">
                             @if ($event->organizer->id == auth()->id())
                             <div class="bg-primary p-2 rounded" style="position: absolute;top:0;right:0;">
