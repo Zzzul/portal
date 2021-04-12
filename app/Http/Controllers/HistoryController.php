@@ -21,4 +21,11 @@ class HistoryController extends Controller
 
         return view('history-event', compact('events'));
     }
+
+    public function detailEvent($slug)
+    {
+        $event = Event::with('category', 'performers', 'audiences')->where('slug', $slug)->firstOrFail();
+
+        return view('detail-event', compact('event'));
+    }
 }

@@ -81,7 +81,7 @@
                     @foreach ($event->audiences as $audience)
                     {{-- jika user sudah terdaftar pada event--}}
                     @if ($audience['pivot']->user_id == auth()->id())
-                    <div class="bg-danger p-2 rounded" style="position: absolute;top:0;right:0;">
+                    <div class="bg-primary p-2 rounded" style="position: absolute;top:0;right:0;">
                         <i class="fas fa-check text-light"></i>
                     </div>
                     @php $registered = $audience['pivot']->user_id @endphp

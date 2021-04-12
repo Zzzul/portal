@@ -165,14 +165,14 @@ class EventController extends Controller
         $event = Event::with('category', 'performers', 'audiences')->where('slug', $slug)->firstOrFail();
 
         if ($event->user_id == auth()->id())
-            return redirect()->route('home')->with('error', 'Can`t register event cause is your event.');
+            return redirect()->back()->with('error', 'Can`t register event cause is your event.');
 
         // if max audience full
         if ($event->max_audience === count($event['audiences']))
-            return redirect()->route('home')->with('error', 'Can`t register event audiences is full.');
+            return redirect()->back()->with('error', 'Can`t register event audiences is full.');
 
         if (date('Y-m-d H:i', strtotime($event->start_time)) < date('Y-m-d H:i'))
-            return redirect()->route('home')->with('error', 'Can`t register event cause event is already started/ended.');
+            return redirect()->back()->with('error', 'Can`t register event cause event is already started/ended.');
 
         try {
 
@@ -183,9 +183,9 @@ class EventController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
-            return redirect()->route('home')->with('success', 'Registered event successfully.');
+            return redirect()->back()->with('success', 'Registered event successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('home')->with('error', 'You`re already registered for this event.');
+            return redirect()->back()->with('error', 'You`re already registered for this event.');
         }
     }
 

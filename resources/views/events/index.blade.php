@@ -67,7 +67,7 @@
                                     <th>Location</th>
                                     <th>Price</th>
                                     <th>Registered Audiences</th>
-                                    <th>Max Audience</th>
+                                    <th>Max Audiences</th>
                                     <th>Created At</th>
                                     <th>Updated At</th>
                                     <th>Action</th>
@@ -114,7 +114,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="13" class="text-center">Data empty/not found.</td>
+                                    <td colspan="14" class="text-center">Data empty/not found.</td>
                                 </tr>
                                 @endforelse
                             </tbody>

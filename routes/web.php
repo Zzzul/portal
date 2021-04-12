@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('home', [HomeController::class, 'index'])->name('home');
 
+Route::get('event/detail/{slug}', [HistoryController::class, 'detailEvent'])->name('detail.event');
+
+
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('category', CategoryController::class)->except('destroy', 'show');
     Route::delete('category/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
