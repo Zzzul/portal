@@ -30,12 +30,25 @@ class CreateNewUser implements CreatesNewUsers
                 Rule::unique(User::class),
             ],
             'password' => $this->passwordRules(),
+            /**
+              *  2  = organizer
+              *  3 = audience
+              */
+            'role' => 'required|numeric|in:2,3',
         ])->validate();
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+
+        $user->assignRole($input['role']);
+        $user->givePermissionTo([
+            'event create', 'event store', 'event edit', 'event update', 'event delete', 'event check payment status', 'event detail', 'event register', 'event history',
+            'performer create', 'performer store', 'performer edit', 'performer update', 'performer delete', 'setting'
+        ]);
+
+        return $user;
     }
 }

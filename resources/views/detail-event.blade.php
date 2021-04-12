@@ -53,9 +53,9 @@
 
                         <div class="mt-3">
                             @if ($event->organizer->id == auth()->id())
-                            <button class="bg-primary p-2 rounded" style="position: absolute;top:0;right:0;">
-                                <i class="fas fa-crown"></i>
-                            </button>
+                            <div class="bg-primary p-2 rounded" style="position: absolute;top:0;right:0;">
+                                <i class="fas fa-crown text-light"></i>
+                            </div>
                             @php $registered = $event->organizer->id @endphp
                             @else
 

@@ -34,6 +34,7 @@ class EventController extends Controller
      */
     public function create()
     {
+        // auth()->user()->hasPermissionTo('jaja')
         $categories = Category::get();
         $performers = Performer::where('user_id', auth()->id())->get();
         return view('events.create', compact('categories', 'performers'));
@@ -95,7 +96,7 @@ class EventController extends Controller
             $performers_id[] = $performer->id;
         }
 
-        $not_event_performers = Performer::whereNotIn('id', $performers_id)->get();
+        $not_event_performers = Performer::where('user_id', auth()->id())->whereNotIn('id', $performers_id)->get();
 
         return view('events.edit', compact('categories', 'event', 'not_event_performers'));
     }

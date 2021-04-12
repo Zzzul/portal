@@ -60,6 +60,15 @@
                         required autocomplete="new-password">
                 </div>
 
+                <div class="form-group mb-3">
+                    <label class="pb-0 mb-0" for="role">{{ __('Register As') }}</label>
+                    <select name="role" id="role" class="form-control" required>
+                        <option value="" selected disabled>--Select Role--</option>
+                        <option value="2">Organizer</option>
+                        <option value="3">Audience</option>
+                    </select>
+                </div>
+
                 <div class="form-group mb-3 mb-0">
                     <button type="submit" class="btn btn-primary">
                         {{ __('Register') }}
