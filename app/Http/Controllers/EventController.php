@@ -208,7 +208,7 @@ class EventController extends Controller
     {
         $event = Event::with(['audiences' => function ($q) {
             $q->where('transaction_code', request()->get('transaction_code'));
-        }])->first();
+        }])->where('user_id', auth()->id())->first();
 
         return view('events.check-payment-status', compact('event'));
     }

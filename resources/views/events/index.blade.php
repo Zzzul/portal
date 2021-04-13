@@ -58,6 +58,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Thumbnail</th>
                                     <th>Title</th>
                                     <th>Description</th>
                                     <th>Category</th>
@@ -77,6 +78,10 @@
                                 @forelse ($events as $index => $event)
                                 <tr>
                                     <td>{{ $events->firstItem() + $index  }}</td>
+                                    <td>
+                                        <img src="{{ asset('storage/images/thumbnail/'. $event->thumbnail) }}"
+                                            alt="{{ $event->thumbnail }}" class="img-fluid card-img-top">
+                                    </td>
                                     <td>{{ $event->title }}</td>
                                     <td>{{ Str::limit($event->description, 75) }}</td>
                                     <td>{{ $event['category']->name }}</td>

@@ -74,6 +74,7 @@
                         <i class="fas fa-crown text-light"></i>
                     </div>
                     @php $registered = $event->organizer->id @endphp
+
                     @else
 
                     @php $registered = '' @endphp
@@ -84,23 +85,25 @@
                     <div class="bg-primary p-2 rounded" style="position: absolute;top:0;right:0;">
                         <i class="fas fa-check text-light"></i>
                     </div>
+
                     @php $registered = $audience['pivot']->user_id @endphp
                     @endif
-                    {{-- end of $audience['pivot']->user_id == auth()->id() --}}
+
                     @endforeach
+
                     @endif
 
                     @guest
                     <a href="{{ route('event.register', $event->slug) }}" class="btn btn-primary btn-block">
                         <i class="fas fa-sign-in-alt"></i>
-                        Register
+                        Book
                     </a>
                     @endguest
 
                     @if ($registered != auth()->id())
                     <a href="{{ route('event.register', $event->slug) }}" class="btn btn-primary btn-block">
                         <i class="fas fa-sign-in-alt"></i>
-                        Register
+                        Book
                     </a>
                     @endif
 

@@ -78,14 +78,14 @@
                             @guest
                             <a href="{{ route('event.register', $event->slug) }}" class="btn btn-primary btn-block">
                                 <i class="fas fa-sign-in-alt"></i>
-                                Register
+                                Book
                             </a>
                             @endguest
 
                             @if ($registered != auth()->id())
                             <a href="{{ route('event.register', $event->slug) }}" class="btn btn-primary btn-block">
                                 <i class="fas fa-sign-in-alt"></i>
-                                Register
+                                Book
                             </a>
                             @endif
 
