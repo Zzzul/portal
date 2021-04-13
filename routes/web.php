@@ -5,6 +5,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PerformerController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,18 +24,13 @@ Route::get('home', [HomeController::class, 'index'])->name('home');
 
 Route::get('event/detail/{slug}', [HistoryController::class, 'detailEvent'])->name('detail.event');
 
-
-Route::group(['middleware' => 'auth'], function () {
-    Route::delete('category/destroy', [CategoryController::class, 'destroy'])->name('category.destroy')->middleware('role:admin');
-    Route::resource('category', CategoryController::class)->except('destroy', 'show')->middleware('role:admin');
-
+Route::group(['middleware' => 'auth', 'role:organizer|admin|audience'], function () {
     Route::get('event/history', [HistoryController::class, 'index'])->name('history')->middleware('permission:event history');
 
     Route::get('event/register/{slug}', [EventController::class, 'registerEvent'])->name('event.register');
 
     Route::view('setting', 'setting')->name('setting')->middleware('permission:setting');
 });
-
 
 Route::group(['middleware' => ['auth', 'role:organizer|admin']], function () {
     // event
@@ -51,4 +47,15 @@ Route::group(['middleware' => ['auth', 'role:organizer|admin']], function () {
     Route::delete('performer/destroy', [PerformerController::class, 'destroy'])->name('performer.destroy');
 
     Route::resource('performer', PerformerController::class)->except('destroy', 'show');
+});
+
+Route::group([
+    'middleware' => ['auth', 'role:admin'],
+    'prefix' => 'admin/'
+], function () {
+    Route::delete('category/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
+
+    Route::resource('category', CategoryController::class)->except('destroy', 'show');
+
+    Route::resource('user', userController::class)->except('destroy', 'show', 'create');
 });

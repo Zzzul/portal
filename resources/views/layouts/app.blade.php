@@ -45,6 +45,11 @@
                     <ul class="navbar-nav ml-auto">
                         @role('admin')
                         <li class="nav-item">
+                            <a class="nav-link{{ request()->is('user') ? ' active' : '' }}"
+                                href="{{ route('user.index') }}">User</a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link{{ request()->is('category') ? ' active' : '' }}"
                                 href="{{ route('category.index') }}">Category</a>
                         </li>
