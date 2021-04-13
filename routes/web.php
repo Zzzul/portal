@@ -22,12 +22,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('home', [HomeController::class, 'index'])->name('home');
 
-Route::get('event/detail/{slug}', [HistoryController::class, 'detailEvent'])->name('detail.event');
+Route::get('event/{slug}/detail', [HistoryController::class, 'detailEvent'])->name('event.detail');
 
 Route::group(['middleware' => 'auth', 'role:organizer|admin|audience'], function () {
     Route::get('event/history', [HistoryController::class, 'index'])->name('history')->middleware('permission:event history');
 
-    Route::get('event/register/{slug}', [EventController::class, 'registerEvent'])->name('event.register');
+    Route::get('event/{slug}/register', [EventController::class, 'registerEvent'])->name('event.register');
 
     Route::view('setting', 'setting')->name('setting')->middleware('permission:setting');
 });

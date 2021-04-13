@@ -91,20 +91,20 @@
                     @endif
 
                     @guest
-                    <a href="event/register/{{ $event->slug }}" class="btn btn-primary btn-block">
+                    <a href="{{ route('event.register', $event->slug) }}" class="btn btn-primary btn-block">
                         <i class="fas fa-sign-in-alt"></i>
                         Register
                     </a>
                     @endguest
 
                     @if ($registered != auth()->id())
-                    <a href="event/register/{{ $event->slug }}" class="btn btn-primary btn-block">
+                    <a href="{{ route('event.register', $event->slug) }}" class="btn btn-primary btn-block">
                         <i class="fas fa-sign-in-alt"></i>
                         Register
                     </a>
                     @endif
 
-                    <a href="event/detail/{{ $event->slug }}" class="btn btn-success btn-block">
+                    <a href="{{ route('event.detail', $event->slug) }}" class="btn btn-success btn-block">
                         <i class="fas fa-eye"></i>
                         Detail
                     </a>

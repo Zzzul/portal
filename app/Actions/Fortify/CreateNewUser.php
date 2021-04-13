@@ -44,10 +44,15 @@ class CreateNewUser implements CreatesNewUsers
         ]);
 
         $user->assignRole($input['role']);
-        $user->givePermissionTo([
-            'event create', 'event store', 'event edit', 'event update', 'event delete', 'event check payment status', 'event detail', 'event register', 'event history',
-            'performer create', 'performer store', 'performer edit', 'performer update', 'performer delete', 'setting'
-        ]);
+        if ($input['role'] == 2) {
+            $user->givePermissionTo([
+                'event create', 'event store', 'event edit', 'event update', 'event delete', 'event check payment status', 'event detail', 'event register', 'event history',
+                'performer create', 'performer store', 'performer edit', 'performer update', 'performer delete', 'setting'
+            ]);
+        } else {
+            $user->givePermissionTo(['event detail', 'event register', 'event history', 'setting']);
+        }
+
 
         return $user;
     }

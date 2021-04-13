@@ -72,14 +72,14 @@
                         @if (Route::has('login'))
                         <li class="nav-item">
                             <a class="nav-link{{ request()->is('login') ? ' active' : '' }}"
-                                href="{{ route('login') }}">{{ __('Login') }}</a>
+                                href="{{ route('login') }}">{{ __('Sign in') }}</a>
                         </li>
                         @endif
 
                         @if (Route::has('register'))
                         <li class="nav-item">
                             <a class="nav-link{{ request()->is('register') ? ' active' : '' }}"
-                                href="{{ route('register') }}">{{ __('Register') }}</a>
+                                href="{{ route('register') }}">{{ __('Sign up') }}</a>
                         </li>
                         @endif
                         @else

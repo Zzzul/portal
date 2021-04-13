@@ -170,7 +170,7 @@ class EventController extends Controller
 
         // if max audience full
         if ($event->max_audience === count($event['audiences']))
-            return redirect()->back()->with('error', 'Can`t register event audiences is full.');
+            return redirect()->back()->with('error', 'Can`t register event cause audiences is full.');
 
         if (date('Y-m-d H:i', strtotime($event->start_time)) < date('Y-m-d H:i'))
             return redirect()->back()->with('error', 'Can`t register event cause event is already started/ended.');
