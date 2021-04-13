@@ -196,9 +196,9 @@ class EventController extends Controller
         $payment_status = DB::table('audience_event')->where('transaction_code', $transaction_code)->limit(1);
 
         if ($event->payment_status == 0) {
-            $payment_status->update(['payment_status' => 1]);
+            $payment_status->update(['payment_status' => 1, 'updated_at' => Carbon::now(),]);
         } else {
-            $payment_status->update(['payment_status' => 0]);
+            $payment_status->update(['payment_status' => 0, 'updated_at' => Carbon::now(),]);
         }
 
         return redirect()->back()->with('success', 'Payment status updated successfully.');
@@ -206,7 +206,9 @@ class EventController extends Controller
 
     public function checkPaymentStatus()
     {
-        $event = DB::table('audience_event')->where('transaction_code', request()->get('transaction_code'))->first();
+        $event = Event::with(['audiences' => function ($q) {
+            $q->where('transaction_code', request()->get('transaction_code'));
+        }])->first();
 
         return view('events.check-payment-status', compact('event'));
     }

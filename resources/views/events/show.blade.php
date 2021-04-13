@@ -73,15 +73,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="location">Location</label>
-                        <textarea class="form-control" placeholder="Location" id="location" disabled
-                            name="location">{{ $event->location }}</textarea>
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" disabled rows="5"
+                            name="description">{{ $event->description }}</textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" id="description" disabled
-                            name="description">{{ $event->description }}</textarea>
+                        <label for="location">Location</label>
+                        <textarea class="form-control" placeholder="Location" id="location" disabled
+                            name="location">{{ $event->location }}</textarea>
                     </div>
 
                     <div class="form-group">

@@ -15,9 +15,16 @@
         </div>
 
         <div class="col-md-6">
+            @if (session()->has('error'))
+            <div class="alert alert-danger show fade">
+                <div class="alert-body">
+                    <h5 class="font-weight-bold">{{ session()->get('error') }}</h5>
+                </div>
+            </div>
+            @endif
 
             {{-- paymnent_status success --}}
-            @if ($event && $event->payment_status == 1)
+            @if (!$event->audiences->isEmpty() && $event['audiences']['0']['pivot']->payment_status == 1)
             <div class="alert alert-success show fade">
                 <div class="alert-body">
                     <h5>Payment status:
@@ -30,7 +37,7 @@
             @endif
 
             {{-- paymnent_status pending --}}
-            @if ($event && $event->payment_status == 0)
+            @if (!$event->audiences->isEmpty() && $event['audiences']['0']['pivot']->payment_status == 0)
             <div class="alert alert-danger show fade">
                 <div class="alert-body">
                     <h5>Payment status:
@@ -43,7 +50,7 @@
             @endif
 
             {{-- if invalid code --}}
-            @if (!$event && request()->get('transaction_code'))
+            @if (!!$event->audiences->isEmpty() && request()->get('transaction_code'))
             <div class="alert alert-danger show fade">
                 <div class="alert-body">
                     <h5 class="font-weight-bold">Invalid transaction code.</h5>
