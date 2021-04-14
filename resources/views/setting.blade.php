@@ -17,10 +17,16 @@
         </div>
         <div class="col-md-6 mt-2">
             @if (session('status') == 'profile-information-updated')
-            <div class="alert alert-success">
-                Profile information updated successfully.
+            <div class="alert alert-success alert-has-icon alert-dismissible show fade">
+                <div class="alert-body">
+                    <button class="close" data-dismiss="alert">
+                        <span>×</span>
+                    </button>
+                    Profile information updated successfully.
+                </div>
             </div>
             @endif
+
             <form method="POST" action="{{ route('user-profile-information.update') }}">
                 @csrf
                 @method('put')
@@ -63,12 +69,17 @@
         </div>
 
         <div class="col-md-4 mt-3">
-            <h5>Change Password</h>
+            <h5>Change Password</h5>
         </div>
         <div class="col-md-6 mt-3">
             @if (session('status') == 'password-updated')
-            <div class="alert alert-success">
-                Password updated successfully.
+            <div class="alert alert-success alert-has-icon alert-dismissible show fade">
+                <div class="alert-body">
+                    <button class="close" data-dismiss="alert">
+                        <span>×</span>
+                    </button>
+                    Password updated successfully.
+                </div>
             </div>
             @endif
 
@@ -127,15 +138,26 @@
             <h5>Two Factor Authentication</h5>
         </div>
         <div class="col-md-6 mt-3">
+
             @if (session('status') == 'two-factor-authentication-disabled')
-            <div class="alert alert-success" role="alert">
-                Two factor Authentication has been disabled.
+            <div class="alert alert-success alert-has-icon alert-dismissible show fade">
+                <div class="alert-body">
+                    <button class="close" data-dismiss="alert">
+                        <span>×</span>
+                    </button>
+                    Two factor Authentication has been disabled.
+                </div>
             </div>
             @endif
 
             @if (session('status') == 'two-factor-authentication-enabled')
-            <div class="alert alert-success" role="alert">
-                Two factor Authentication has been enabled.
+            <div class="alert alert-success alert-has-icon alert-dismissible show fade">
+                <div class="alert-body">
+                    <button class="close" data-dismiss="alert">
+                        <span>×</span>
+                    </button>
+                    Two factor Authentication has been enabled.
+                </div>
             </div>
             @endif
 

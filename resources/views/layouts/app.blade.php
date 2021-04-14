@@ -43,6 +43,12 @@
                     </ul>
 
                     <ul class="navbar-nav ml-auto">
+                        @role('audience')
+                        <li class="nav-item">
+                            <a class="nav-link{{ request()->is('/') ? ' active' : '' }}" href="/">Event</a>
+                        </li>
+                        @endrole
+
                         @role('admin')
                         <li class="nav-item">
                             <a class="nav-link{{ request()->is('admin/user') ? ' active' : '' }}"
