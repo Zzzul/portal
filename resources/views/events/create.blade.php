@@ -104,7 +104,8 @@
                             <label for="thumbnail">Thumbnail</label>
                             <input type="file" class="form-control @error('thumbnail')is-invalid @enderror"
                                 id="thumbnail" name="thumbnail" />
-                            @error('thumbnail') <span class="text-danger">{{ $message }}</span> @enderror
+                            @error('thumbnail') <span class="text-danger">{{ $message }}</span> <br>
+                            @enderror
                             <label for="thumbnail">
                                 Image: jpg, png, jpeg, svg, max:2MB
                             </label>

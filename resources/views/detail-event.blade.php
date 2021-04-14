@@ -76,14 +76,14 @@
                             @endif
 
                             @guest
-                            <a href="{{ route('event.register', $event->slug) }}" class="btn btn-primary btn-block">
+                            <a href="{{ route('event.book', $event->slug) }}" class="btn btn-primary btn-block">
                                 <i class="fas fa-sign-in-alt"></i>
                                 Book
                             </a>
                             @endguest
 
                             @if ($registered != auth()->id())
-                            <a href="{{ route('event.register', $event->slug) }}" class="btn btn-primary btn-block">
+                            <a href="{{ route('event.book', $event->slug) }}" class="btn btn-primary btn-block">
                                 <i class="fas fa-sign-in-alt"></i>
                                 Book
                             </a>
@@ -93,7 +93,7 @@
                                 Send proof of transfer to email <a
                                     href="mailto:{{ $event->organizer->email }}">{{ $event->organizer->email }}</a>
                                 before
-                                the event start.
+                                the event starts.
                             </p>
                         </div>
                     </div>

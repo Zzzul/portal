@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Organizer;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Performer\StorePerformerRequest;
 use App\Http\Requests\Performer\UpdatePerformerRequest;
 use App\Models\Performer;
@@ -9,6 +10,14 @@ use Illuminate\Http\Request;
 
 class PerformerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:performer index')->only('index');
+        $this->middleware('permission:performer create')->only('create');
+        $this->middleware('permission:performer edit')->only('edit');
+        $this->middleware('permission:performer update')->only('update');
+    }
+
     /**
      * Display a listing of the resource.
      *

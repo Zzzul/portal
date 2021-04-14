@@ -15,8 +15,10 @@
         </div>
 
         <div class="col-md-6">
+            @if ($event)
             {{-- paymnent_status success --}}
-            @if (!$event->audiences->isEmpty() && $event['audiences']['0']['pivot']->payment_status == 1)
+            @if (!$event->audiences->isEmpty() &&
+            $event['audiences']['0']['pivot']->payment_status == 1)
             <div class="alert alert-success show fade">
                 <div class="alert-body">
                     <h5>Payment status:
@@ -29,7 +31,8 @@
             @endif
 
             {{-- paymnent_status pending --}}
-            @if (!$event->audiences->isEmpty() && $event['audiences']['0']['pivot']->payment_status == 0)
+            @if (!$event->audiences->isEmpty() &&
+            $event['audiences']['0']['pivot']->payment_status == 0)
             <div class="alert alert-danger show fade">
                 <div class="alert-body">
                     <h5>Payment status:
@@ -43,6 +46,14 @@
 
             {{-- if invalid code or event is own by another user --}}
             @if ($event->audiences->isEmpty() && request()->get('transaction_code'))
+            <div class="alert alert-danger show fade">
+                <div class="alert-body">
+                    <h5 class="font-weight-bold">Invalid transaction code.</h5>
+                </div>
+            </div>
+            @endif
+
+            @elseif(!$event && request()->get('transaction_code'))
             <div class="alert alert-danger show fade">
                 <div class="alert-body">
                     <h5 class="font-weight-bold">Invalid transaction code.</h5>

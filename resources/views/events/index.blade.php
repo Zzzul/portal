@@ -119,7 +119,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="14" class="text-center">Data empty/not found.</td>
+                                    <td colspan="15" class="text-center">Data empty/not found.</td>
                                 </tr>
                                 @endforelse
                             </tbody>

@@ -94,14 +94,14 @@
                     @endif
 
                     @guest
-                    <a href="{{ route('event.register', $event->slug) }}" class="btn btn-primary btn-block">
+                    <a href="{{ route('event.book', $event->slug) }}" class="btn btn-primary btn-block">
                         <i class="fas fa-sign-in-alt"></i>
                         Book
                     </a>
                     @endguest
 
                     @if ($registered != auth()->id())
-                    <a href="{{ route('event.register', $event->slug) }}" class="btn btn-primary btn-block">
+                    <a href="{{ route('event.book', $event->slug) }}" class="btn btn-primary btn-block">
                         <i class="fas fa-sign-in-alt"></i>
                         Book
                     </a>
@@ -115,7 +115,9 @@
             </div>
         </div>
         @empty
-        <p>No event found.</p>
+        <div class="col-md-4 mt-2">
+            <h4>No event found.</h4>
+        </div>
         @endforelse
     </div>
 </div>

@@ -62,7 +62,7 @@
                             @forelse ($users as $index => $user)
                             <tr>
                                 <td>{{ $users->firstItem() + $index  }}</td>
-                                <td>{{ $user->name }}</td>
+                                <td>{{ Str::ucfirst($user->name) }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ Str::ucfirst($user->getRoleNames()[0]) }}</td>
                                 <td class="m-0 p-0">
@@ -83,7 +83,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="text-center">Data empty/not found.</td>
+                                <td colspan="7" class="text-center">Data empty/not found.</td>
                             </tr>
                             @endforelse
                         </tbody>

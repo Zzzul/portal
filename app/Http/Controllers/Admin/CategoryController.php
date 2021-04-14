@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
 
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
@@ -8,6 +10,14 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:category index')->only('index');
+        $this->middleware('permission:category create')->only('create');
+        $this->middleware('permission:category edit')->only('edit');
+        $this->middleware('permission:category update')->only('update');
+    }
+
     /**
      * Display a listing of the resource.
      *

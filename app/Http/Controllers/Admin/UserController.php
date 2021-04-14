@@ -1,19 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use App\Models\User;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:user index')->only('index');
+        $this->middleware('permission:user edit')->only('edit');
+        $this->middleware('permission:user update')->only('update');
+    }
+
     public function index()
     {
         $users = User::with('roles', 'permissions')->paginate(10);
-        // echo json_encode($users);
-        // die;
+
         return view('user.index', compact('users'));
     }
 

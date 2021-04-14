@@ -2,178 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Event\StoreEventRequest;
-use App\Http\Requests\Event\UpdateEventRequest;
-use App\Models\Category;
 use App\Models\Event;
-use App\Models\Performer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $events = Event::with('category', 'performers', 'audiences')->where('user_id', auth()->id())->paginate(10);
+        $events = Event::with('category', 'performers', 'history')
+            ->whereHas('audiences', function ($q) {
+                $q->where('audience_event.user_id', auth()->id());
+            })
+            ->get();
 
-        return view('events.index', compact('events'));
+        // echo json_encode($events);
+        // die;
+
+        return view('history-event', compact('events'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function detailEvent($slug)
     {
-        // auth()->user()->hasPermissionTo('jaja')
-        $categories = Category::get();
-        $performers = Performer::where('user_id', auth()->id())->get();
-        return view('events.create', compact('categories', 'performers'));
+        $event = Event::with('category', 'performers', 'audiences')->where('slug', $slug)->firstOrFail();
+
+        return view('detail-event', compact('event'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreEventRequest $request)
-    {
-        $attr = $request->validated();
-        $attr['slug'] = Str::slug($attr['title']);
-        $attr['user_id'] = auth()->id();
-
-        if ($request->file('thumbnail')->isValid()) {
-            $filename = $attr['slug']  . '.' . $request->thumbnail->extension();
-
-            $request->thumbnail->storeAs('public/images/thumbnail/', $filename);
-
-            $attr['thumbnail'] = $filename;
-        }
-
-        $event = Event::create($attr);
-        $event->performers()->attach($request->performer_id);
-
-        return redirect()->route('event.index')->with('success', 'Event created successfully.');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $event = Event::with('category', 'performers', 'audiences')->where('id', $id)->where('user_id', auth()->id())->firstOrFail();
-
-        return view('events.show', compact('event'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $categories = Category::get();
-
-        $event = Event::with('category', 'performers')->where('id', $id)->where('user_id', auth()->id())->firstOrFail();
-
-        $performers_id = [];
-        foreach ($event->performers as $performer) {
-            $performers_id[] = $performer->id;
-        }
-
-        $not_event_performers = Performer::where('user_id', auth()->id())->whereNotIn('id', $performers_id)->get();
-
-        return view('events.edit', compact('categories', 'event', 'not_event_performers'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateEventRequest $request, $id)
-    {
-        $event = Event::with('category', 'performers')->where('id', $id)->where('user_id', auth()->id())->firstOrFail();
-
-        $attr = $request->validated();
-        $attr['slug'] = Str::slug($attr['title']);
-
-        if ($request->file('thumbnail') && $request->file('thumbnail')->isValid()) {
-            // remove old file
-            Storage::delete('public/images/thumbnail/' . $event->thumbnail);
-
-            $filename = $attr['slug'] . '.' . $request->thumbnail->extension();
-
-            $request->thumbnail->storeAs('public/images/thumbnail/', $filename);
-
-            $attr['thumbnail'] = $filename;
-        }
-
-        $event->update($attr);
-
-        $event->performers()->sync($request->performer_id);
-
-        return redirect()->route('event.index')->with('success', 'Event updated successfully.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy()
-    {
-        $event = Event::with('audiences', 'performers')->where(['id' => request()->id, 'user_id' => auth()->id()])->firstOrFail();
-
-        // if empty regisrered audiences
-        if ($event->audiences->isEmpty()) {
-            // detach all event_performers, so can delete event
-            $event->performers()->detach($event->performers);
-
-            try {
-                Storage::delete('public/images/thumbnail/' . $event->thumbnail);
-                $event->delete();
-
-                return redirect()->route('event.index')->with('success', 'Event deleted successfully.');
-            } catch (\Exception $ex) {
-                return redirect()->route('event.index')->with('error', 'Can`t delete event.');
-            }
-        } else {
-            return redirect()->route('event.index')->with('error', 'Can`t delete event.');
-        }
-    }
-
-    public function registerEvent($slug)
+    public function bookEvent($slug)
     {
         $event = Event::with('category', 'performers', 'audiences')->where('slug', $slug)->firstOrFail();
 
         if ($event->user_id == auth()->id())
-            return redirect()->back()->with('error', 'Can`t register event cause is your event.');
+            return redirect()->back()->with('error', 'Can`t book event cause is your event.');
 
         // if max audience full
         if ($event->max_audience === count($event['audiences']))
-            return redirect()->back()->with('error', 'Can`t register event cause audiences is full.');
+            return redirect()->back()->with('error', 'Can`t book event cause audiences is full.');
 
         if (date('Y-m-d H:i', strtotime($event->start_time)) < date('Y-m-d H:i'))
-            return redirect()->back()->with('error', 'Can`t register event cause event is already started/ended.');
+            return redirect()->back()->with('error', 'Can`t book event cause event is already started/ended.');
 
         try {
 
@@ -184,32 +53,9 @@ class EventController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
-            return redirect()->back()->with('success', 'Registered event successfully.');
+            return redirect()->back()->with('success', 'Book event successfully.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'You`re already registered for this event.');
+            return redirect()->back()->with('error', 'You`re already book for this event.');
         }
-    }
-
-    public function updatePaymentStatus($transaction_code)
-    {
-        $event = DB::table('audience_event')->where('transaction_code', $transaction_code)->first();
-        $payment_status = DB::table('audience_event')->where('transaction_code', $transaction_code)->limit(1);
-
-        if ($event->payment_status == 0) {
-            $payment_status->update(['payment_status' => 1, 'updated_at' => Carbon::now(),]);
-        } else {
-            $payment_status->update(['payment_status' => 0, 'updated_at' => Carbon::now(),]);
-        }
-
-        return redirect()->back()->with('success', 'Payment status updated successfully.');
-    }
-
-    public function checkPaymentStatus()
-    {
-        $event = Event::with(['audiences' => function ($q) {
-            $q->where('transaction_code', request()->get('transaction_code'));
-        }])->where('user_id', auth()->id())->first();
-
-        return view('events.check-payment-status', compact('event'));
     }
 }

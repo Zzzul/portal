@@ -28,22 +28,23 @@ class UserSeeder extends Seeder
         $user->givePermissionTo(Permission::all());
 
         $user = User::create([
-            'name' => 'Organizer',
+            'name' => 'Ini Organizer',
             'email' => 'organizer@gmail.com',
             'password' => bcrypt('password'),
         ]);
         $user->assignRole('organizer');
         $user->givePermissionTo([
-            'event create', 'event store', 'event edit', 'event update', 'event delete', 'event check payment status', 'event detail', 'event register', 'event history',
-            'performer create', 'performer store', 'performer edit', 'performer update', 'performer delete', 'setting'
+            'event index', 'event create', 'event store', 'event show', 'event edit', 'event update', 'event delete', 'event check payment status', 'event update payment status', 'event book', 'event history',
+            'performer index', 'performer create', 'performer store', 'performer edit', 'performer update', 'performer delete',
+            'setting'
         ]);
 
         $user = User::create([
-            'name' => 'Audience',
+            'name' => 'Ini Audience',
             'email' => 'audience@gmail.com',
             'password' => bcrypt('password'),
         ]);
         $user->assignRole('audience');
-        $user->givePermissionTo(['event detail', 'event register', 'event history', 'setting']);
+        $user->givePermissionTo(['event book', 'event history', 'setting']);
     }
 }
